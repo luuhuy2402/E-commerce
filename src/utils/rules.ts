@@ -1,20 +1,10 @@
 import type { RegisterOptions, UseFormGetValues } from "react-hook-form";
 
-// type Rules = {
-//     [key in "email" | "password" | "confirm_password"]?: RegisterOptions;
-// };
-
-interface FormData {
-    email: string;
-    password: string;
-    confirm_password: string;
-}
-
-// Định nghĩa Rules với kiểu dữ liệu chính xác
 type Rules = {
-    [K in keyof FormData]: RegisterOptions<FormData, K>;
+    [key in "email" | "password" | "confirm_password"]?: RegisterOptions;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
     email: {
         required: {

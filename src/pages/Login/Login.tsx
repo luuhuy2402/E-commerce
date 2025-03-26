@@ -3,14 +3,13 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
     const {
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(() => {
         // console.log(data);
     });
-
+    console.log(errors);
     // const valuePassword = watch("password");
 
     return (

@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { getRules, rules } from "../../utils/rules";
+import { getRules } from "../../utils/rules";
+import Input from "../../components/Input";
 
 interface FormData {
     email: string;
@@ -18,7 +19,7 @@ export default function Register() {
 
     const rules = getRules(getValues);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(() => {
         // console.log(data);
     });
     console.log(errors);
@@ -33,7 +34,7 @@ export default function Register() {
                             noValidate
                         >
                             <div className="text-2xl">Đăng ký</div>
-                            <div className="mt-8">
+                            {/* <div className="mt-8">
                                 <input
                                     type="email"
                                     // name="email"
@@ -71,7 +72,38 @@ export default function Register() {
                                 <div className="mt-1 text-red-600 min-h-[1.25rem] text-sm">
                                     {errors.confirm_password?.message}
                                 </div>
-                            </div>
+                            </div> */}
+
+                            <Input
+                                name="email"
+                                register={register}
+                                type="email"
+                                className="mt-8"
+                                errorMessage={errors.email?.message}
+                                placeholder="Email"
+                                rules={rules.email}
+                            />
+                            <Input
+                                name="password"
+                                register={register}
+                                type="password"
+                                className="mt-2"
+                                errorMessage={errors.password?.message}
+                                placeholder="Password"
+                                rules={rules.password}
+                                autoComplete="on"
+                            />
+
+                            <Input
+                                name="confirm_password"
+                                register={register}
+                                type="password"
+                                className="mt-2"
+                                errorMessage={errors.confirm_password?.message}
+                                placeholder="Confirm Password"
+                                rules={rules.confirm_password}
+                                autoComplete="on"
+                            />
                             <div className="mt-2">
                                 <button
                                     type="submit"
