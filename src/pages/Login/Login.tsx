@@ -8,9 +8,11 @@ export default function Login() {
         formState: { errors },
     } = useForm();
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
+        // console.log(data);
     });
-    console.log(errors);
+
+    // const valuePassword = watch("password");
+
     return (
         <div className="bg-orange">
             <div className="max-w-7xl mx-auto px-4">
@@ -36,6 +38,7 @@ export default function Login() {
                                     name="password"
                                     className="p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm"
                                     placeholder="Password"
+                                    autoComplete="on"
                                 />
                                 <div className="mt-1 text-red-600 min-h-[1rem] text-sm"></div>
                             </div>
