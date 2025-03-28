@@ -1,13 +1,10 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { getRules } from "../../utils/rules";
+import { Schema, schema } from "../../utils/rules";
 import Input from "../../components/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-interface FormData {
-    email: string;
-    password: string;
-    confirm_password: string;
-}
+type FormData = Schema;
 
 export default function Register() {
     const {
@@ -15,9 +12,9 @@ export default function Register() {
         handleSubmit,
         getValues,
         formState: { errors },
-    } = useForm<FormData>();
-
-    const rules = getRules(getValues);
+    } = useForm<FormData>({
+        resolver: yupResolver(schema),
+    });
 
     const onSubmit = handleSubmit(() => {
         // console.log(data);
@@ -34,45 +31,6 @@ export default function Register() {
                             noValidate
                         >
                             <div className="text-2xl">Đăng ký</div>
-                            {/* <div className="mt-8">
-                                <input
-                                    type="email"
-                                    // name="email"
-                                    className="p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm"
-                                    placeholder="Email"
-                                    {...register("email", rules.email)} //register có return về name nên ko cần thuộc tính name ở trên
-                                />
-                                <div className="mt-1 text-red-600 min-h-[1.25rem] text-sm">
-                                    {errors.email?.message}
-                                </div>
-                            </div>
-                            <div className="mt-2">
-                                <input
-                                    type="password"
-                                    className="p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm"
-                                    placeholder="Password"
-                                    autoComplete="on"
-                                    {...register("password", rules.password)}
-                                />
-                                <div className="mt-1 text-red-600 min-h-[1.25rem] text-sm">
-                                    {errors.password?.message}
-                                </div>
-                            </div>
-                            <div className="mt-2">
-                                <input
-                                    type="password"
-                                    className="p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm"
-                                    placeholder="Confirm Password"
-                                    autoComplete="on"
-                                    {...register(
-                                        "confirm_password",
-                                        rules.confirm_password
-                                    )}
-                                />
-                                <div className="mt-1 text-red-600 min-h-[1.25rem] text-sm">
-                                    {errors.confirm_password?.message}
-                                </div>
-                            </div> */}
 
                             <Input
                                 name="email"
@@ -81,7 +39,6 @@ export default function Register() {
                                 className="mt-8"
                                 errorMessage={errors.email?.message}
                                 placeholder="Email"
-                                rules={rules.email}
                             />
                             <Input
                                 name="password"
@@ -90,7 +47,6 @@ export default function Register() {
                                 className="mt-2"
                                 errorMessage={errors.password?.message}
                                 placeholder="Password"
-                                rules={rules.password}
                                 autoComplete="on"
                             />
 
@@ -101,7 +57,6 @@ export default function Register() {
                                 className="mt-2"
                                 errorMessage={errors.confirm_password?.message}
                                 placeholder="Confirm Password"
-                                rules={rules.confirm_password}
                                 autoComplete="on"
                             />
                             <div className="mt-2">
