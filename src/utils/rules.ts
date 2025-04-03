@@ -84,8 +84,4 @@ export const schema = yup.object({
         .oneOf([yup.ref("password")], " Nhập lại password không khớp!"), //lấy value của password để so sáng xem có khớp không
 });
 
-const loginSchema = schema.omit(["confirm_password"]);
-
-export type LoginSchema = yup.InferType<typeof loginSchema>;
-
 export type Schema = yup.InferType<typeof schema>;
