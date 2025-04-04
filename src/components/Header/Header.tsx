@@ -1,33 +1,12 @@
 import { Link } from "react-router-dom";
-import { useState, useRef } from "react";
-import {
-    useFloating,
-    FloatingPortal,
-    arrow,
-    shift,
-    offset,
-} from "@floating-ui/react-dom-interactions";
-import { motion, AnimatePresence } from "framer-motion";
+import Popover from "../Popover";
 
 export default function Header() {
-    const [open, setOpen] = useState(false);
-    const arrowRef = useRef<HTMLElement>(null);
-    const { x, y, reference, floating, strategy, middlewareData } = useFloating(
-        {
-            middleware: [offset(6), shift(), arrow({ element: arrowRef })],
-        }
-    );
-    const showPopover = () => {
-        setOpen(true);
-    };
-    const hidePopover = () => {
-        setOpen(false);
-    };
     return (
         <div className="pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white">
             <div className="container">
                 <div className="flex justify-end">
-                    <div
+                    {/* <div
                         className="flex items-center py-1 hover:text-gray-300 cursor-pointer"
                         ref={reference}
                         onMouseEnter={showPopover}
@@ -110,8 +89,75 @@ export default function Header() {
                                 )}
                             </AnimatePresence>
                         </FloatingPortal>
-                    </div>
-                    <div className="flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6">
+                    </div> */}
+                    <Popover
+                        className="flex items-center py-1 hover:text-gray-300 cursor-pointer"
+                        renderPopover={
+                            <div className="bg-white relative shadow-md rounded-sm border border-gray-200">
+                                <div className="flex flex-col py-2 pr-28 pl-3">
+                                    <button className="py-2 px-3 hover:text-orange">
+                                        Tiếng Việt
+                                    </button>
+                                    <button className="py-2 px-3 hover:text-orange mt-2">
+                                        English
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+                            />
+                        </svg>
+                        <span className="mx-1">Tiếng Việt</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                            />
+                        </svg>
+                    </Popover>
+
+                    <Popover
+                        className="flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6"
+                        renderPopover={
+                            <div className="bg-white relative shadow-md rounded-sm border border-gray-200">
+                                <Link
+                                    to="/"
+                                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left"
+                                >
+                                    Tài khoản của tôi
+                                </Link>
+                                <Link
+                                    to="/"
+                                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left"
+                                >
+                                    Đơn mua
+                                </Link>
+                                <button className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left">
+                                    Đăng xuất
+                                </button>
+                            </div>
+                        }
+                    >
                         <div className="w-6 h-6 mr-2 flex-shrink-0">
                             <img
                                 src="https://down-vn.img.susercontent.com/file/30c03aa8aac2d1f595871a7a00b72927_tn"
@@ -120,8 +166,9 @@ export default function Header() {
                             />
                         </div>
                         <div>Xeoxeo</div>
-                    </div>
+                    </Popover>
                 </div>
+
                 <div className="grid grid-cols-12 gap-4 mt-4 items-end">
                     {/* col-span-2: chiếm 2/12 cột */}
                     <Link to="/" className="col-span-2">
