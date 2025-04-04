@@ -18,6 +18,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: any;
     renderPopover: React.ReactNode;
     className?: string;
