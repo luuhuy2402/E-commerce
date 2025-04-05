@@ -10,6 +10,7 @@ import { ErrorResponse } from "../../types/utils.type";
 import { isAxiosUnprocessableEntityError } from "../../utils/utils";
 import { useContext } from "react";
 import { AppContext } from "../../contexts/app.context";
+import Button from "../../components/Button";
 
 type FormData = Schema;
 
@@ -101,12 +102,16 @@ export default function Register() {
                                 autoComplete="on"
                             />
                             <div className="mt-2">
-                                <button
+                                <Button
                                     type="submit"
-                                    className="w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600"
+                                    className="w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center"
+                                    isLoading={
+                                        registerAccountMutation.isLoading
+                                    }
+                                    disabled={registerAccountMutation.isLoading}
                                 >
                                     Đăng ký
-                                </button>
+                                </Button>
                             </div>
                             <div className="flex items-center justify-center mt-8">
                                 <span className="text-gray-400">
