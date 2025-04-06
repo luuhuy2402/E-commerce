@@ -22,7 +22,7 @@ export interface Product {
 // Kiểu dữ liệu trả về của API danh sách sản phẩm
 export interface ProductList {
     products: Product[];
-    paginate: {
+    pagination: {
         page: number;
         limit: number;
         page_size: number;
@@ -30,13 +30,13 @@ export interface ProductList {
 }
 //kiểu dữ liệu của các params truyền vào API
 export interface ProductListConfig {
-    page?: number;
-    limit?: number;
+    page?: number | string;
+    limit?: number | string;
     sort_by?: "createdAt" | "view" | "sold" | "price";
     order?: "asc" | "desc";
     exclude?: string;
-    rating_filter?: number;
-    price_max?: number;
-    price_min?: number;
+    rating_filter?: number | string;
+    price_max?: number | string;
+    price_min?: number | string;
     name?: string;
 }
