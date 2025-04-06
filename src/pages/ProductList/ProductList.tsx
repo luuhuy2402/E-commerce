@@ -4,9 +4,12 @@ import Product from "./Product/Product";
 import SortProductList from "./SortProductList";
 import useQueryParams from "../../hooks/useQueryParams";
 import productApi from "../../apis/product.api";
+import Pagination from "../../components/Pagination";
+import { useState } from "react";
 
 export default function ProductList() {
     const queryParams = useQueryParams();
+    const [page, setPage] = useState(1);
     const { data } = useQuery({
         queryKey: ["products", queryParams],
         queryFn: () => productApi.getProducts(queryParams),
@@ -32,6 +35,11 @@ export default function ProductList() {
                                     </div>
                                 ))}
                         </div>
+                        <Pagination
+                            page={page}
+                            setPage={setPage}
+                            pageSize={20}
+                        />
                     </div>
                 </div>
             </div>
