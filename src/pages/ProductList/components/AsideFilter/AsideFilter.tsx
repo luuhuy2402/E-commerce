@@ -1,16 +1,17 @@
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
-import path from "../../../constants/path";
-import Button from "../../../components/Button";
-import { QueryConfig } from "../ProductList";
-import { Category } from "../../../types/category.type";
-import classNames from "classnames";
-import InputNumber from "../../../components/InputNumber";
-import { useForm, Controller } from "react-hook-form";
-import { Schema, schema } from "../../../utils/rules";
-import { NoUndefinedField } from "../../../types/utils.type";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { omit } from "lodash";
 import RatingStars from "../RatingStars";
+import { QueryConfig } from "../../ProductList";
+import { Category } from "../../../../types/category.type";
+import { NoUndefinedField } from "../../../../types/utils.type";
+import { schema, Schema } from "../../../../utils/rules";
+import { Controller, useForm } from "react-hook-form";
+import path from "../../../../constants/path";
+import classNames from "classnames";
+import InputNumber from "../../../../components/InputNumber";
+import Button from "../../../../components/Button";
 
 interface Props {
     queryConfig: QueryConfig;
@@ -50,7 +51,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             }).toString(),
         });
     });
-    //Bỏ lựa chọn khoảng giá, hay sao, hoặc danh mục trên params 
+    //Bỏ lựa chọn khoảng giá, hay sao, hoặc danh mục trên params
     const handleRemoveAll = () => {
         navigate({
             pathname: path.home,
