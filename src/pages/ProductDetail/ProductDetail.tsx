@@ -9,7 +9,7 @@ import {
 import ProductRating from "../../components/ProductRating";
 import InputNumber from "../../components/InputNumber";
 import DOMPurify from "dompurify";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Product } from "../../types/product.type";
 
 export default function ProductDetail() {
@@ -22,7 +22,7 @@ export default function ProductDetail() {
     const [activeImage, setActiveImage] = useState(""); //ảnh đang được hover hoặc click
 
     const product = productDetailData?.data.data;
-
+    const imageRef = useRef<HTMLImageElement>(null);
     //các ảnh sp hiển thị ở dưới
     const currentImages = useMemo(
         () => (product ? product.images.slice(...currentIndexImages) : []),
@@ -52,6 +52,34 @@ export default function ProductDetail() {
         setActiveImage(img);
     };
 
+    const handleZoom = (
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+        const rect = event.currentTarget.getBoundingClientRect(); //lấy được kích thức, vị trí của thẻ div bao ảnh
+        console.log(rect);
+        const image = imageRef.current as HTMLImageElement;
+        const { naturalHeight, naturalWidth } = image; //lấy kích thước nguyên bản của ảnh
+        // Cách 1: Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event. thêm class pointer-events-none vào thẻ img
+        // const { offsetX, offsetY } = event.nativeEvent
+        //offsetX, offsetY là vị trí con trỏ chuột
+
+        // Cách 2: Lấy offsetX, offsetY khi chúng ta không xử lý được bubble event
+        const offsetX = event.pageX - (rect.x + window.scrollX);
+        const offsetY = event.pageY - (rect.y + window.scrollY);
+
+        const top = offsetY * (1 - naturalHeight / rect.height);
+        const left = offsetX * (1 - naturalWidth / rect.width);
+        image.style.width = naturalWidth + "px";
+        image.style.height = naturalHeight + "px";
+        image.style.maxWidth = "unset";
+        image.style.top = top + "px";
+        image.style.left = left + "px";
+    };
+
+    const handleRemoveZoom = () => {
+        imageRef.current?.removeAttribute("style");
+    };
+
     if (!product) return null;
 
     return (
@@ -60,11 +88,16 @@ export default function ProductDetail() {
                 <div className="bg-white p-4 shadow">
                     <div className="grid grid-cols-12 gap-9">
                         <div className="col-span-5">
-                            <div className="relative w-full pt-[100%] shadow">
+                            <div
+                                className="relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow"
+                                onMouseMove={handleZoom}
+                                onMouseLeave={handleRemoveZoom}
+                            >
                                 <img
                                     src={activeImage}
                                     alt={product.name}
-                                    className="absolute top-0 left-0 h-full w-full bg-white object-cover"
+                                    className=" absolute top-0 left-0 h-full w-full bg-white object-cover "
+                                    ref={imageRef}
                                 />
                             </div>
                             <div className="relative mt-4 grid grid-cols-5 gap-1">
