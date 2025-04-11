@@ -97,7 +97,7 @@ export const schema = yup.object({
     //.test để custom lại validate
     price_min: yup.string().test({
         name: "price-not-allowed", //tên của rule ví dụ "required"
-        message: "Giá không phù hợp", //message khi bị lỗi 
+        message: "Giá không phù hợp", //message khi bị lỗi
         test: testPriceMinMax, //là 1 function để kiểm tra giá trị
     }),
     price_max: yup.string().test({
@@ -105,6 +105,7 @@ export const schema = yup.object({
         message: "Giá không phù hợp",
         test: testPriceMinMax,
     }),
+    name: yup.string().trim().required("Tên sản phẩm là bắt buộc"),
 });
 
 export type Schema = yup.InferType<typeof schema>;
