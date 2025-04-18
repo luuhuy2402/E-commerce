@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import purchaseApi from "../../apis/purchase.api";
 import { purchasesStatus } from "../../constants/purchase";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { formatCurrency, generateNameId } from "../../utils/utils";
 import path from "../../constants/path";
 import QuantityController from "../../components/QuantityController";
@@ -250,7 +250,7 @@ export default function Cart() {
                                                                             ._id,
                                                                     }
                                                                 )}`}
-                                                                className="line-clamp-2"
+                                                                className="line-clamp-2 text-left"
                                                             >
                                                                 {
                                                                     purchase

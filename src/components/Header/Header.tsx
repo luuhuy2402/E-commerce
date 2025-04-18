@@ -1,52 +1,21 @@
-import { createSearchParams, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Popover from "../Popover";
 import { useContext } from "react";
 import { AppContext } from "../../contexts/app.context";
-import { useMutation, useQuery } from "@tanstack/react-query";
-
+import { useQuery } from "@tanstack/react-query";
 import path from "../../constants/path";
-import authApi from "../../apis/auth.api";
-import { schema, Schema } from "../../utils/rules";
-import useQueryConfig from "../../hooks/useQueryConfig";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { omit } from "lodash";
 import { purchasesStatus } from "../../constants/purchase";
 import purchaseApi from "../../apis/purchase.api";
 import noproduct from "../../assets/noproduct.png";
 import { formatCurrency } from "../../utils/utils";
-import { queryClient } from "../../main";
-
-type FormData = Pick<Schema, "name">;
-
-const nameSchema = schema.pick(["name"]);
+import useSearchProducts from "../../hooks/useSearchProducts";
+import NavHeader from "../NavHeader";
 
 const MAX_PURCHASES = 5;
 
 export default function Header() {
-    const queryConfig = useQueryConfig();
-    const { register, handleSubmit } = useForm<FormData>({
-        defaultValues: {
-            name: "",
-        },
-        resolver: yupResolver(nameSchema),
-    });
-    const navigate = useNavigate();
-
-    const { setIsAuthenticated, isAuthenticated, setProfile, profile } =
-        useContext(AppContext);
-    const logoutMutation = useMutation({
-        mutationFn: authApi.logout,
-        onSuccess: () => {
-            setIsAuthenticated(false);
-            setProfile(null);
-            //khi logout thì ko gọi api sp trong giỏ hàng nữa
-            queryClient.removeQueries({
-                queryKey: ["purchases", { status: purchasesStatus.inCart }],
-            });
-        },
-    });
-
+    const { isAuthenticated } = useContext(AppContext);
+    const { onSubmitSearch, register } = useSearchProducts();
     // Khi chúng ta chuyển trang thì Header chỉ bị re-render
     // Chứ không bị unmount - mounting again
     // (Tất nhiên là trừ trường hợp logout rồi nhảy sang RegisterLayout rồi nhảy vào lại)
@@ -61,32 +30,10 @@ export default function Header() {
 
     const purchasesInCart = purchasesInCartData?.data.data;
 
-    const handleLogout = () => {
-        logoutMutation.mutate();
-    };
-
-    const onSubmitSearch = handleSubmit((data) => {
-        const config = queryConfig.order
-            ? omit(
-                  {
-                      ...queryConfig,
-                      name: data.name,
-                  },
-                  ["order", "sort_by"]
-              )
-            : {
-                  ...queryConfig,
-                  name: data.name,
-              };
-        navigate({
-            pathname: path.home,
-            search: createSearchParams(config).toString(),
-        });
-    });
     return (
         <div className="pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white">
             <div className="container">
-                <div className="flex justify-end">
+                {/* <div className="flex justify-end">
                     <Popover
                         className="flex items-center py-1 hover:text-white/70 cursor-pointer"
                         renderPopover={
@@ -187,8 +134,8 @@ export default function Header() {
                             <div>{profile?.email}</div>
                         </Popover>
                     )}
-                </div>
-
+                </div> */}
+                <NavHeader />
                 <div className="grid grid-cols-12 gap-4 mt-4 items-end">
                     {/* col-span-2: chiếm 2/12 cột */}
                     <Link to="/" className="col-span-2">
