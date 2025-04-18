@@ -1,24 +1,20 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import purchaseApi from "../../apis/purchase.api";
 import { purchasesStatus } from "../../constants/purchase";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { formatCurrency, generateNameId } from "../../utils/utils";
 import path from "../../constants/path";
 import QuantityController from "../../components/QuantityController";
 import Button from "../../components/Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Purchase } from "../../types/purchase.type";
 import { produce } from "immer";
 import { keyBy } from "lodash";
 import { toast } from "react-toastify";
-interface ExtendedPurchase extends Purchase {
-    disabled: boolean;
-    checked: boolean;
-}
+import { AppContext } from "../../contexts/app.context";
+
 export default function Cart() {
-    const [extendedPurchases, setExtendedPurchase] = useState<
-        ExtendedPurchase[]
-    >([]);
+    const { extendedPurchases, setExtendedPurchase } = useContext(AppContext);
     const { data: purchasesInCartData, refetch } = useQuery({
         queryKey: ["purchases", { status: purchasesStatus.inCart }],
         queryFn: () =>
@@ -49,6 +45,10 @@ export default function Cart() {
         },
     });
 
+    const location = useLocation();
+    const choosenPurchaseIdFromLocation = (
+        location.state as { purchaseId: string } | null
+    )?.purchaseId;
     const purchasesInCart = purchasesInCartData?.data.data;
     const isAllChecked = extendedPurchases.every(
         (purchase) => purchase.checked
@@ -80,19 +80,30 @@ export default function Cart() {
     useEffect(() => {
         setExtendedPurchase((prev) => {
             const extendedPurchasesObject = keyBy(prev, "_id");
-            console.log("extendedPurchasesObject", extendedPurchasesObject);
+
             return (
-                purchasesInCart?.map((purchase) => ({
-                    ...purchase,
-                    disabled: false,
-                    checked: Boolean(
-                        extendedPurchasesObject[purchase._id]?.checked
-                    ),
-                })) || []
+                purchasesInCart?.map((purchase) => {
+                    const isChoosenPurchaseFromLocation =
+                        choosenPurchaseIdFromLocation === purchase._id;
+                    return {
+                        ...purchase,
+                        disabled: false,
+                        checked:
+                            isChoosenPurchaseFromLocation ||
+                            Boolean(
+                                extendedPurchasesObject[purchase._id]?.checked
+                            ),
+                    };
+                }) || []
             );
         });
-    }, [purchasesInCart]);
+    }, [purchasesInCart, choosenPurchaseIdFromLocation]);
 
+    useEffect(() => {
+        return () => {
+            history.replaceState(null, "");
+        };
+    }, []);
     const handleCheck =
         (purchaseIndex: number) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
