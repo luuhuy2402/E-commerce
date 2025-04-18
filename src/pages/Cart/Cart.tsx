@@ -6,7 +6,7 @@ import { formatCurrency, generateNameId } from "../../utils/utils";
 import path from "../../constants/path";
 import QuantityController from "../../components/QuantityController";
 import Button from "../../components/Button";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { Purchase } from "../../types/purchase.type";
 import { produce } from "immer";
 import { keyBy } from "lodash";
@@ -46,36 +46,41 @@ export default function Cart() {
     });
 
     const location = useLocation();
+
     const choosenPurchaseIdFromLocation = (
         location.state as { purchaseId: string } | null
     )?.purchaseId;
     const purchasesInCart = purchasesInCartData?.data.data;
-    const isAllChecked = extendedPurchases.every(
-        (purchase) => purchase.checked
+    const isAllChecked = useMemo(
+        () => extendedPurchases.every((purchase) => purchase.checked),
+        [extendedPurchases]
     );
-    const checkedPurchases = extendedPurchases.filter(
-        (purchase) => purchase.checked
+    const checkedPurchases = useMemo(
+        () => extendedPurchases.filter((purchase) => purchase.checked),
+        [extendedPurchases]
     );
     const checkdPurchasesCount = checkedPurchases.length;
 
     //Tổng giá sản phẩm đã check
-    const totalCheckedPurchasePrice = checkedPurchases.reduce(
-        (result, current) => {
-            return result + current.product.price * current.buy_count;
-        },
-        0
+    const totalCheckedPurchasePrice = useMemo(
+        () =>
+            checkedPurchases.reduce((result, current) => {
+                return result + current.product.price * current.buy_count;
+            }, 0),
+        [checkedPurchases]
     );
     //Tổng tiền khuyến mãi khi các sản phẩm được check
-    const totalChecedPurchaseSavingPrice = checkedPurchases.reduce(
-        (result, current) => {
-            return (
-                result +
-                (current.product.price_before_discount -
-                    current.product.price) *
-                    current.buy_count
-            );
-        },
-        0
+    const totalChecedPurchaseSavingPrice = useMemo(
+        () =>
+            checkedPurchases.reduce((result, current) => {
+                return (
+                    result +
+                    (current.product.price_before_discount -
+                        current.product.price) *
+                        current.buy_count
+                );
+            }, 0),
+        [checkedPurchases]
     );
     useEffect(() => {
         setExtendedPurchase((prev) => {
