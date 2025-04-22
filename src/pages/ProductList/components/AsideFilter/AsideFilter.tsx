@@ -18,7 +18,7 @@ interface Props {
     categories: Category[];
 }
 
-type FormData = NoUndefinedField<Pick<Schema, "price_max" | "price_min">>;
+type FormData = Pick<Schema, "price_min" | "price_max">;
 /**
  * Rule validate
  * Nếu có price_min và price_max thì price_max >= price_min
@@ -46,8 +46,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             pathname: path.home,
             search: createSearchParams({
                 ...queryConfig,
-                price_max: data.price_max,
-                price_min: data.price_min,
+                price_max: data.price_max as string,
+                price_min: data.price_min as string,
             }).toString(),
         });
     });
