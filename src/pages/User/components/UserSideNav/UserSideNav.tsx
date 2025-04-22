@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import path from "../../../../constants/path";
+import { useContext } from "react";
+import { AppContext } from "../../../../contexts/app.context";
 
 export default function UserSideNav() {
+    const { profile } = useContext(AppContext);
     return (
         <div>
             <div className="flex items-center border-b border-b-gray-200 py-4">
@@ -10,14 +13,17 @@ export default function UserSideNav() {
                     className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10"
                 >
                     <img
-                        src="https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn"
+                        src={
+                            profile?.avatar ||
+                            "https://www.pixelstalk.net/wp-content/uploads/2016/08/Cute-Puppy-Wallpaper.jpg"
+                        }
                         alt=""
                         className="h-full w-full object-cover"
                     />
                 </Link>
                 <div className="flex-grow pl-4">
                     <div className="mb-1 truncate font-semibold text-gray-600">
-                        LuuHieu
+                        {profile?.email}
                     </div>
                     <Link
                         to={path.profile}

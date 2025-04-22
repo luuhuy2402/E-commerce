@@ -5,9 +5,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import userApi from "../../../../apis/user.api";
 import { userSchema, UserSchema } from "../../../../utils/rules";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import InputNumber from "../../../../components/InputNumber";
 import Button from "../../../../components/Button";
+import { toast } from "react-toastify";
+import { AppContext } from "../../../../contexts/app.context";
+import { setProfileToLS } from "../../../../utils/auth";
 
 type FormData = Pick<
     UserSchema,
@@ -22,11 +25,12 @@ const profileSchema = userSchema.pick([
     "avatar",
 ]);
 export default function Profile() {
-    const { data: profileData } = useQuery({
+    const { setProfile } = useContext(AppContext);
+    const { data: profileData, refetch } = useQuery({
         queryKey: ["profile"],
         queryFn: userApi.getProfile,
     });
-    
+
     const profile = profileData?.data.data;
     const updateProfileMutation = useMutation(userApi.updateProfile);
     const {
@@ -35,8 +39,6 @@ export default function Profile() {
         formState: { errors },
         handleSubmit,
         setValue,
-        watch,
-        setError,
     } = useForm<FormData>({
         defaultValues: {
             name: "",
@@ -64,11 +66,19 @@ export default function Profile() {
     }, [profile, setValue]);
 
     const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
-        // await updateProfileMutation.mutateAsync({})
+        // console.log(data);
+
+        const res = await updateProfileMutation.mutateAsync({
+            ...data,
+            date_of_birth: data.date_of_birth?.toISOString(),
+        });
+        setProfile(res.data.data);
+        setProfileToLS(res.data.data);
+        refetch();
+        toast.success(res.data.message);
     });
 
-    const value = watch();
+    // const value = watch();
     return (
         <div className="rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20">
             <div className="border-b border-b-gray-200 py-6">
@@ -158,7 +168,7 @@ export default function Profile() {
                         <div className="truncate pt-3 capitalize sm:w-[20%] sm:text-right" />
                         <div className="sm:w-[80%] sm:pl-5">
                             <Button
-                                className="flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80"
+                                className="flex h-9 items-center bg-orange px-5 text-center text-sm text-white rounded-sm hover:bg-orange/80"
                                 type="submit"
                             >
                                 Lưu
