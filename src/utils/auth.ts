@@ -1,5 +1,7 @@
 import { User } from "../types/user.type";
 
+export const LocalStorageEventTarget = new EventTarget(); //tao ra 1 eventTarget de bat su kien
+
 export const setAccessTokenToLS = (access_token: string) => {
     localStorage.setItem("access_token", access_token);
 };
@@ -7,6 +9,8 @@ export const setAccessTokenToLS = (access_token: string) => {
 export const clearLS = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("profile");
+    const clearLSEvent = new Event("clearLS"); //tao ra su kien clearLS de bat su kien o component
+    LocalStorageEventTarget.dispatchEvent(clearLSEvent);
 };
 
 export const getAccessTokenFromLS = () =>

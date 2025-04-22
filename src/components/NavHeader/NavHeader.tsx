@@ -1,14 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Popover from "../Popover";
 import { AppContext } from "../../contexts/app.context";
 import { purchasesStatus } from "../../constants/purchase";
-import { queryClient } from "../../main";
+
 import path from "../../constants/path";
 import authApi from "../../apis/auth.api";
 
 export default function NavHeader() {
+    const queryClient = useQueryClient();
     const { setIsAuthenticated, isAuthenticated, setProfile, profile } =
         useContext(AppContext);
 
