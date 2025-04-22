@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import userApi from "../../../../apis/user.api";
 import { userSchema, UserSchema } from "../../../../utils/rules";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import InputNumber from "../../../../components/InputNumber";
 import Button from "../../../../components/Button";
 import { toast } from "react-toastify";
@@ -25,7 +25,9 @@ const profileSchema = userSchema.pick([
     "avatar",
 ]);
 export default function Profile() {
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const { setProfile } = useContext(AppContext);
+    const [file, setFile] = useState<File>();
     const { data: profileData, refetch } = useQuery({
         queryKey: ["profile"],
         queryFn: userApi.getProfile,
@@ -77,6 +79,13 @@ export default function Profile() {
         refetch();
         toast.success(res.data.message);
     });
+    const handleUpload = () => {
+        fileInputRef.current?.click();
+    };
+    const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const fileFromLocal = e.target.files?.[0];
+        setFile(fileFromLocal);
+    };
 
     // const value = watch();
     return (
@@ -189,8 +198,11 @@ export default function Profile() {
                             className="hidden"
                             type="file"
                             accept=".jpg,.jpeg,.png"
+                            ref={fileInputRef}
+                            onChange={onFileChange}
                         />
                         <button
+                            onClick={handleUpload}
                             type="button"
                             className="flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm"
                         >
