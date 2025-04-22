@@ -9,6 +9,7 @@ import {
 } from "./auth";
 import { AuthResponse } from "../types/auth.type";
 import path from "../constants/path";
+import config from "../constants/config";
 
 class Http {
     instance: AxiosInstance;
@@ -17,7 +18,7 @@ class Http {
         //Khởi tạo thêm biến để lưu trữ trên ram mỗi lần sd nhanh hơn là lấy từ localStorage
         this.accessToken = getAccessTokenFromLS();
         this.instance = axios.create({
-            baseURL: "https://api-ecom.duthanhduoc.com/",
+            baseURL: config.baseUrl,
             timeout: 1000,
             headers: {
                 "Content-Type": "application/json",
@@ -60,7 +61,7 @@ class Http {
                 ) {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const data: any | undefined = error.response?.data;
-                    const message = data.message || error.message;
+                    const message = data?.message || error.message;
                     toast.error(message);
                 }
                 if (error.response?.status === HttpStatusCode.Unauthorized) {

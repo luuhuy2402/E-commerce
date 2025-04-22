@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import HttpStatusCode from "../constants/httpStatusCode.enum";
+import config from "../constants/config";
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
     return axios.isAxiosError(error);
@@ -34,7 +35,7 @@ export function formatNumberToSocialStyle(value: number) {
 export const rateSale = (original: number, sale: number) =>
     Math.round(((original - sale) / original) * 100) + "%";
 
-//Xoá tất cả kí tự đặc biệt 
+//Xoá tất cả kí tự đặc biệt
 const removeSpecialCharacter = (str: string) =>
     // eslint-disable-next-line no-useless-escape
     str.replace(
@@ -50,3 +51,8 @@ export const getIdFromNameId = (nameId: string) => {
     const arr = nameId.split("-i-");
     return arr[arr.length - 1];
 };
+
+export const getAvatarUrl = (avatarName?: string) =>
+    avatarName
+        ? `${config.baseUrl}images/${avatarName}`
+        : "https://www.pixelstalk.net/wp-content/uploads/2016/08/Cute-Puppy-Wallpaper.jpg";

@@ -7,6 +7,7 @@ import { purchasesStatus } from "../../constants/purchase";
 
 import path from "../../constants/path";
 import authApi from "../../apis/auth.api";
+import { getAvatarUrl } from "../../utils/utils";
 
 export default function NavHeader() {
     const queryClient = useQueryClient();
@@ -103,10 +104,7 @@ export default function NavHeader() {
                 >
                     <div className="mr-2 h-6 w-6 flex-shrink-0">
                         <img
-                            src={
-                                profile?.avatar ||
-                                "https://www.pixelstalk.net/wp-content/uploads/2016/08/Cute-Puppy-Wallpaper.jpg"
-                            }
+                            src={getAvatarUrl(profile?.avatar)}
                             alt="avatar"
                             className="h-full w-full rounded-full object-cover"
                         />

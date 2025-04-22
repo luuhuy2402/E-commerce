@@ -3,7 +3,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { omit } from "lodash";
 import RatingStars from "../RatingStars";
 import { Category } from "../../../../types/category.type";
-import { NoUndefinedField } from "../../../../types/utils.type";
 import { schema, Schema } from "../../../../utils/rules";
 import { Controller, useForm } from "react-hook-form";
 import path from "../../../../constants/path";
