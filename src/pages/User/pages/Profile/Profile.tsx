@@ -16,6 +16,7 @@ import {
     isAxiosUnprocessableEntityError,
 } from "../../../../utils/utils";
 import { ErrorResponse } from "../../../../types/utils.type";
+import config from "../../../../constants/config";
 
 type FormData = Pick<
     UserSchema,
@@ -139,7 +140,15 @@ export default function Profile() {
     };
     const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileFromLocal = e.target.files?.[0];
-        setFile(fileFromLocal);
+        if (
+            fileFromLocal &&
+            (fileFromLocal.size >= config.maxSizeUploadAvatar ||
+                !fileFromLocal.type.includes("image"))
+        ) {
+            toast.error("Dụng lượng file tối đa 1 MB. Định dạng:.JPEG, .PNG!");
+        } else {
+            setFile(fileFromLocal);
+        }
     };
 
     // const value = watch();
@@ -255,6 +264,9 @@ export default function Profile() {
                             accept=".jpg,.jpeg,.png"
                             ref={fileInputRef}
                             onChange={onFileChange}
+                            onClick={(event) => {
+                                (event.target as any).value = null;
+                            }}
                         />
                         <button
                             onClick={handleUpload}
