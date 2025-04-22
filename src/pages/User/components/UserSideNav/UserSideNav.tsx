@@ -5,6 +5,7 @@ import { AppContext } from "../../../../contexts/app.context";
 import { getAvatarUrl } from "../../../../utils/utils";
 import classNames from "classnames";
 
+
 export default function UserSideNav() {
     const { profile } = useContext(AppContext);
     return (
