@@ -9,7 +9,7 @@ import Button from "../../components/Button";
 import { useContext, useEffect, useMemo } from "react";
 import { Purchase } from "../../types/purchase.type";
 import { produce } from "immer";
-import { keyBy } from "lodash";
+import keyBy from "lodash/keyBy";
 import { toast } from "react-toastify";
 import { AppContext } from "../../contexts/app.context";
 import noproduct from "../../assets/noproduct.png";

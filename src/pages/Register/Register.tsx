@@ -4,7 +4,7 @@ import { Schema, schema } from "../../utils/rules";
 import Input from "../../components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { omit } from "lodash";
+import omit from "lodash/omit";
 import { ErrorResponse } from "../../types/utils.type";
 import { isAxiosUnprocessableEntityError } from "../../utils/utils";
 import { useContext } from "react";

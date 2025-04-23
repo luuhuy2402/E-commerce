@@ -3,7 +3,7 @@ import { userSchema, UserSchema } from "../../../../utils/rules";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import userApi from "../../../../apis/user.api";
-import { omit } from "lodash";
+import omit from "lodash/omit";
 import { toast } from "react-toastify";
 import { isAxiosUnprocessableEntityError } from "../../../../utils/utils";
 import { ErrorResponse } from "../../../../types/utils.type";

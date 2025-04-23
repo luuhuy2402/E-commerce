@@ -1,6 +1,6 @@
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { omit } from "lodash";
+import omit from "lodash/omit";
 import RatingStars from "../RatingStars";
 import { Category } from "../../../../types/category.type";
 import { schema, Schema } from "../../../../utils/rules";
