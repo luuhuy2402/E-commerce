@@ -14,6 +14,7 @@ import ChangePassword from "./pages/User/pages/ChangePassword/ChangePassword.tsx
 import UserLayout from "./pages/User/layouts/UserLayout/UserLayout.tsx";
 import Profile from "./pages/User/pages/Profile/Profile.tsx";
 import HistoryPurchase from "./pages/User/pages/HistoryPurchase/HistoryPurchase.tsx";
+import NotFound from "./pages/NotFound/NotFound.tsx";
 
 function ProtectedRoute() {
     const { isAuthenticated } = useContext(AppContext);
@@ -99,6 +100,15 @@ export default function useRouteElements() {
             element: (
                 <MainLayout>
                     <ProductList />
+                </MainLayout>
+            ),
+        },
+        {
+            path: "*",
+            index: true,
+            element: (
+                <MainLayout>
+                    <NotFound />
                 </MainLayout>
             ),
         },
