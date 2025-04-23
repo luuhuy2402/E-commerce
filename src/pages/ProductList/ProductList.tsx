@@ -7,6 +7,7 @@ import AsideFilter from "./components/AsideFilter";
 import SortProductList from "./components/SortProductList";
 import Product from "./components/Product";
 import useQueryConfig from "../../hooks/useQueryConfig";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductList() {
     const queryConfig = useQueryConfig();
@@ -27,6 +28,10 @@ export default function ProductList() {
 
     return (
         <div className="bg-gray-200 py-6">
+            <Helmet>
+                <title>Trang chủ | E-commerce</title>
+                <meta name="description" content="Trang chủ dự án" />
+            </Helmet>
             <div className="container">
                 {productsData && (
                     <div className="grid grid-cols-12 gap-6">
