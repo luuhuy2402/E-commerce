@@ -11,7 +11,7 @@ import InputNumber from "../../../../components/InputNumber";
 import Button from "../../../../components/Button";
 import { QueryConfig } from "../../../../hooks/useQueryConfig";
 import InputV2 from "../../../../components/InputV2";
-
+import { useTranslation } from "react-i18next";
 interface Props {
     queryConfig: QueryConfig;
     categories: Category[];
@@ -25,6 +25,7 @@ type FormData = Pick<Schema, "price_min" | "price_max">;
  */
 const priceSchema = schema.pick(["price_min", "price_max"]);
 export default function AsideFilter({ queryConfig, categories }: Props) {
+    const { t } = useTranslation("home");
     const { category } = queryConfig;
     console.log(category, categories);
     const {
@@ -85,7 +86,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                         </g>
                     </g>
                 </svg>
-                Tất cả danh mục
+                {t("aside filter.all categories")}
+                {/* Tất cả danh mục */}
             </Link>
             <div className="bg-gray-300 h-[1px] my-4" />
             <ul>
@@ -140,7 +142,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                         />
                     </g>
                 </svg>
-                Bộ lọc tìm kiếm
+                {t("aside filter.filter search")}
             </Link>
             <div className="bg-gray-300 h-[1px] my-4" />
             <div className="my-5">

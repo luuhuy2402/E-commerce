@@ -20,8 +20,10 @@ import purchaseApi from "../../apis/purchase.api";
 import { toast } from "react-toastify";
 import { purchasesStatus } from "../../constants/purchase";
 import path from "../../constants/path";
+import { useTranslation } from "react-i18next";
 
 export default function ProductDetail() {
+    const { t } = useTranslation(["product"]);
     const queryClient = useQueryClient();
     const [buyCount, setBuyCount] = useState(1);
     const { nameId } = useParams();
@@ -87,7 +89,7 @@ export default function ProductDetail() {
         event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => {
         const rect = event.currentTarget.getBoundingClientRect(); //lấy được kích thức, vị trí của thẻ div bao ảnh
-        console.log(rect);
+        // console.log(rect);
         const image = imageRef.current as HTMLImageElement;
         const { naturalHeight, naturalWidth } = image; //lấy kích thước nguyên bản của ảnh
         // Cách 1: Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event. thêm class pointer-events-none vào thẻ img
@@ -284,7 +286,9 @@ export default function ProductDetail() {
                                     max={product.quantity}
                                 />
                                 <div className="ml-6 text-sm text-gray-500">
-                                    {product.quantity} sản phẩm có sẵn
+                                    {product.quantity + " "}
+
+                                    {t("product:available")}
                                 </div>
                             </div>
                             <div className="mt-8 flex items-center">
