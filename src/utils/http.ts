@@ -11,6 +11,7 @@ import {
     getRefreshTokenFromLS,
     setAccessTokenToLS,
     setProfileToLS,
+    setRefreshTokenToLS,
 } from "./auth";
 import { AuthResponse, RefreshTokenReponse } from "../types/auth.type";
 import config from "../constants/config";
@@ -65,6 +66,7 @@ class Http {
                     this.accessToken = data.data.access_token;
 
                     setAccessTokenToLS(this.accessToken);
+                    setRefreshTokenToLS(data.data.refresh_token);
                     setProfileToLS(data.data.user);
                     this.refreshToken = data.data.refresh_token;
                 } else if (url === URL_LOGOUT) {
